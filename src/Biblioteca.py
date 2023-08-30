@@ -3,7 +3,8 @@ import os
 from Libro import *
 from utils import *
 
-archivo = "biblioteca.csv" # example.csv
+script_dir = os.path.dirname(__file__) # Obtiene la ruta de este archivo
+archivo = os.path.join(script_dir, "biblioteca.csv") # example.csv
 
 class Biblioteca:
 	def __init__(self):

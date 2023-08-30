@@ -1,28 +1,7 @@
 import os
 
-class Biblioteca:
-	def __init__(self):
-		self.libros = [] #! Hacer los cambios para que lo guarde en un .csv
-	def agregarLibro(self, libro):
-		self.libros.append(libro)
-	def mostrarLibros(self):
-		if not self.libros:
-			print("No hay libros registrados")
-		else:
-			for libro in self.libros:
-				libro.mostrarInformacion()
-				print("--------------------")
-
-		os.system("pause")
-
-class Libro:
-	def __init__(self, titulo, autor, genero, publicacion):
-		self.titulo = titulo
-		self.autor = autor
-		self.genero = genero
-		self.publicacion = publicacion
-	def mostrarInformacion(self):
-		print(f"Titulo: {self.titulo}\nAutor: {self.autor}\nGenero: {self.genero}\nPublicacion: {self.publicacion}")
+from Biblioteca import *
+from Libro import *
 
 biblioteca = Biblioteca()
 

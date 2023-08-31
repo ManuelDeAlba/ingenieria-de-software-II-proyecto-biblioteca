@@ -31,4 +31,17 @@ class Biblioteca:
 				print(libro.mostrarInformacion())
 				print("--------------------")
 
-		os.system("pause")
+	def buscarLibros(self, tipo, contenido):
+		self.encontrados = []
+
+		for libro in self.libros:
+			if (
+				(tipo == "titulo" and contenido.lower() in libro.titulo.lower()) or
+				(tipo == "autor" and contenido.lower() in libro.autor.lower()) or
+				(tipo == "genero" and contenido.lower() in libro.genero.lower()) or
+				(tipo == "publicacion" and contenido == str(libro.publicacion)) or
+				(tipo == "estado" and libro.estado == contenido)
+			):
+				self.encontrados.append(libro)
+
+		return self.encontrados

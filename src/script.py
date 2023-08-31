@@ -16,6 +16,31 @@ def agregarLibro():
 
 def mostrarLibros():
 	biblioteca.mostrarLibros()
+	os.system("pause")
+
+def buscarLibros():
+	print("Buscar Libros")
+	print("1) Titulo")
+	print("2) Autor")
+	print("3) Genero")
+	print("4) Año")
+	print("5) Estado")
+	tipo = int(input("Buscar por: ")) - 1
+	contenido = input("Escribe el texto que quieres buscar: ")
+
+	TIPOS = ["titulo", "autor", "genero", "publicacion", "estado"]
+
+	os.system("cls")
+	encontrados = biblioteca.buscarLibros(TIPOS[tipo], contenido)
+
+	if encontrados:
+		for libro in encontrados:
+			print(libro.mostrarInformacion())
+			print("--------------------")
+	else:
+		print("Libros no encontrados")
+
+	os.system("pause")
 
 ejecutando = True
 while ejecutando:
@@ -36,4 +61,5 @@ while ejecutando:
 	os.system("cls")
 	if opcion == "1": agregarLibro()
 	elif opcion == "2": mostrarLibros()
+	elif opcion == "3": buscarLibros()
 	elif opcion == "10": ejecutando = False

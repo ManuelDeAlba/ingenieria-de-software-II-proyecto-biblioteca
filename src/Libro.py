@@ -4,9 +4,10 @@ class Libro:
 		self.autor = autor
 		self.genero = genero
 		self.publicacion = publicacion
+		self.estado = "Disponible"
 
 	def mostrarInformacion(self):
-		return f"Titulo: {self.titulo}\nAutor: {self.autor}\nGenero: {self.genero}\nPublicacion: {self.publicacion}"
+		return f"Titulo: {self.titulo}\nAutor: {self.autor}\nGenero: {self.genero}\nPublicacion: {self.publicacion}\nEstado: {self.estado}"
 	
 	def toCSV(self):
 		return [self.titulo, self.autor, self.genero, self.publicacion]

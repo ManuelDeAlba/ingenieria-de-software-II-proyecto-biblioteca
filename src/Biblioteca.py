@@ -31,6 +31,8 @@ class Biblioteca:
 				print(libro.mostrarInformacion())
 				print("--------------------")
 
+		os.system("pause")
+  
 	def buscarLibros(self, tipo, contenido):
 		self.encontrados = []
 
@@ -45,3 +47,15 @@ class Biblioteca:
 				self.encontrados.append(libro)
 
 		return self.encontrados
+  
+	def reservarLibro(self):
+		os.system("pause")
+		if not self.libros:
+			print("No hay libros registrados")
+		else:
+			titulo_libro = input("Introduce el nombre del libro a reservar: ")
+			libro_encontrado = None   
+			for libro in self.libros:
+				if libro.titulo.lower() == titulo_libro.lower() and libro.estado=="Disponible":
+					libro_encontrado = libro
+					libro.estado = "No disponible"

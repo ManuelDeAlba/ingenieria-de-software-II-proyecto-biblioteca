@@ -6,42 +6,44 @@ from Libro import *
 biblioteca = Biblioteca()
 
 def agregarLibro():
-    print("AGREGAR LIBRO \n")
+    print("Agregar libro\n")
     titulo = input("Introduce el titulo del libro: ")
     autor = input("Introduce el autor del libro: ")
     genero = input("Introduce el genero del libro: ")
     publicacion =  input("Introduce el año de publicacion: ")
-    
+
     libro = Libro(titulo, autor, genero, publicacion)
     biblioteca.agregarLibro(libro)
 
 def mostrarLibros():
-	biblioteca.mostrarLibros()
-	os.system("pause")
+    biblioteca.mostrarLibros()
+    os.system("pause")
 
 def buscarLibros():
-	print("Buscar Libros")
-	print("1) Titulo")
-	print("2) Autor")
-	print("3) Genero")
-	print("4) Año")
-	print("5) Estado")
-	tipo = int(input("Buscar por: ")) - 1
-	contenido = input("Escribe el texto que quieres buscar: ")
+    print("Buscar Libros")
+    print("1) Titulo")
+    print("2) Autor")
+    print("3) Genero")
+    print("4) Año")
+    print("5) Estado")
+    tipo = int(input("Buscar por: ")) - 1
+    contenido = input("Escribe el texto que quieres buscar: ")
 
-	TIPOS = ["titulo", "autor", "genero", "publicacion", "estado"]
+    TIPOS = ["titulo", "autor", "genero", "publicacion", "estado"]
 
-	os.system("cls")
-	encontrados = biblioteca.buscarLibros(TIPOS[tipo], contenido)
+    os.system("cls")
 
-	if encontrados:
-		for libro in encontrados:
-			print(libro.mostrarInformacion())
-			print("--------------------")
-	else:
-		print("Libros no encontrados")
+    # Se muestran los libros encontrados
+    encontrados = biblioteca.buscarLibros(TIPOS[tipo], contenido)
 
-	os.system("pause")
+    if encontrados:
+        for libro in encontrados:
+            print(libro.mostrarInformacion())
+            print("--------------------")
+    else:
+        print("Libros no encontrados\n")
+
+    os.system("pause")
 
 ejecutando = True
 while ejecutando:
@@ -64,4 +66,5 @@ while ejecutando:
     elif opcion == "2": mostrarLibros()
     elif opcion == "3": buscarLibros()
     elif opcion == "4": biblioteca.reservarLibro()
+    elif opcion == "5": biblioteca.cancelarReservacion()
     elif opcion == "10": ejecutando = False

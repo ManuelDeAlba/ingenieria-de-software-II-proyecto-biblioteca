@@ -19,37 +19,45 @@ class Biblioteca:
             for libro in datos:
                 self.libros.append(Libro(*libro))
 
-    def cambiarEstado(self, nuevoEstado):
-        if not self.libros:
-            print("No hay libros registrados\n")
-            return
-        
-        titulo = input("Introduce el nombre del libro a reservar: ")
+    def cambiarEstado(self, titulo, nuevoEstado):
+        # Se busca por el titulo del libro
+        encontrados = list(filter(lambda libro: libro.titulo.lower() == titulo.lower(), self.libros))
 
-        for libro in self.libros:
-            if libro.titulo.lower() == titulo.lower():
-                # Si encuentra el libro, le pone el nuevo estado (0: no disponible, 1: disponible)
-                libro.estado = LIBRO_ESTADOS[nuevoEstado]
+        if not len(encontrados): # Si no existe el libro
+            raise Exception("ERROR_NO_ENCONTRADO")
+        elif encontrados[0].estado == LIBRO_ESTADOS[nuevoEstado]: # Si se queda con el mismo estado
+            raise Exception("ERROR_ESTADO")
+        else: # Si encuentra el libro, le pone el nuevo estado (0: no disponible, 1: disponible)
+            encontrados[0].estado = LIBRO_ESTADOS[nuevoEstado]
 
-                # Se muestra el libro actualizado
-                print("\nEstado actualizado\n")
-                print(libro.mostrarInformacion(),"\n")
-                os.system("pause")
+            # Guarda los libros con los cambios que se hayan hecho
+            guardarDatosCSV([libro.toCSV() for libro in self.libros], archivo)
 
-        # Guarda los libros con los cambios que se hayan hecho
-        guardarDatosCSV([libro.toCSV() for libro in self.libros], archivo)
+            # Se muestra el libro actualizado
+            print("\nEstado actualizado\n")
+            print(encontrados[0].obtenerInformacion(),"\n")
+            os.system("pause")
 
     def agregarLibro(self, libro):
         self.libros.append(libro)
         guardarDatosCSV([libro.toCSV() for libro in self.libros], archivo)
 
+        print("\nLibro agregado con éxito\n")
+        print(libro.obtenerInformacion(), "\n")
+        os.system("pause")
+
     def mostrarLibros(self):
         if not self.libros:
-            print("No hay libros registrados")
+            print("No hay libros registrados\n")
         else:
+            print("Libros encontrados\n")
+            print("--------------------")
+
             for libro in self.libros:
-                print(libro.mostrarInformacion())
+                print(libro.obtenerInformacion())
                 print("--------------------")
+
+            print("")
 
     def buscarLibros(self, tipo, contenido):
         self.encontrados = []
@@ -66,8 +74,24 @@ class Biblioteca:
 
         return self.encontrados
     
-    def reservarLibro(self):
-        self.cambiarEstado(0)
+    def reservarLibro(self, titulo):
+        try:
+            self.cambiarEstado(titulo, 0)
+        except Exception as err:
+            if str(err) == "ERROR_NO_ENCONTRADO":
+                print("\nLibro no encontrado\n")
+            elif str(err) == "ERROR_ESTADO":
+                print("\nEl libro ya está reservado\n")
 
-    def cancelarReservacion(self):
-        self.cambiarEstado(1)
+            os.system("pause")
+
+    def cancelarReservacion(self, titulo):
+        try:
+            self.cambiarEstado(titulo, 1)
+        except Exception as err:
+            if str(err) == "ERROR_NO_ENCONTRADO":
+                print("\nLibro no encontrado\n")
+            elif str(err) == "ERROR_ESTADO":
+                print("\nEl libro ya está disponible\n")
+
+            os.system("pause")

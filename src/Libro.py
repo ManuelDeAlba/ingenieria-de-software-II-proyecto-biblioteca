@@ -6,7 +6,7 @@ class Libro:
         self.publicacion = publicacion
         self.estado = estado
 
-    def mostrarInformacion(self):
+    def obtenerInformacion(self):
         return f"Titulo: {self.titulo}\nAutor: {self.autor}\nGenero: {self.genero}\nPublicacion: {self.publicacion}\nEstado: {self.estado}"
 	
     def toCSV(self):

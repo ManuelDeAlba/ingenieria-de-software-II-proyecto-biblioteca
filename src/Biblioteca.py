@@ -101,6 +101,7 @@ class Biblioteca:
 
         if not librosEncontrados:
             print("\nLibro no encontrado\n")
+            os.system("pause")
             return
         
         libro = librosEncontrados[0]
@@ -136,4 +137,27 @@ class Biblioteca:
         print("\nLibro actualizado")
         print(libro.obtenerInformacion(), "\n")
         
+        os.system("pause")
+
+    def eliminarLibro(self, titulo):
+        librosEncontrados = [libro for libro in self.libros if libro.titulo.lower() == titulo.lower()]
+
+        if not librosEncontrados:
+            print("\nLibro no encontrado\n")
+            os.system("pause")
+            return
+        
+        print("\nLibro encontrado:\n" + librosEncontrados[0].obtenerInformacion())
+
+        opc = input("\nEliminar (s/n): ")
+
+        if opc.lower() == "n":
+            return
+
+        librosFiltrados = [libro for libro in self.libros if libro.titulo.lower() != titulo.lower()]
+
+        self.libros = librosFiltrados
+        guardarDatosCSV([libro.toCSV() for libro in self.libros], archivo)
+
+        print("\nLibro eliminado\n")
         os.system("pause")

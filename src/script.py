@@ -84,6 +84,16 @@ def editarLibro():
     titulo = input("Introduce el nombre del libro a editar: ")
     biblioteca.editarLibro(titulo)
 
+def eliminarLibro():
+    print("Eliminar libro\n")
+
+    if not biblioteca.libros:
+        print("No hay libros registrados\n")
+        return
+    
+    titulo = input("Introduce el nombre del libro a eliminar: ")
+    biblioteca.eliminarLibro(titulo)
+
 ejecutando = True
 while ejecutando:
     os.system("cls")
@@ -94,9 +104,9 @@ while ejecutando:
     print("4) Reservar libro")
     print("5) Cancelar reserva de libro")
     print("6) Editar información de libro")
-    print("7) Prestar libro")
-    print("8) Devolver libro")
-    print("9) Eliminar libro")
+    print("7) Eliminar libro")
+    print("8) Prestar libro")
+    print("9) Devolver libro")
     print("10) Salir")
     opcion = input("Ingresa el número de la opción: ")
 
@@ -107,4 +117,5 @@ while ejecutando:
     elif opcion == "4": reservarLibro()
     elif opcion == "5": cancelarLibro()
     elif opcion == "6": editarLibro()
+    elif opcion == "7": eliminarLibro()
     elif opcion == "10": ejecutando = False

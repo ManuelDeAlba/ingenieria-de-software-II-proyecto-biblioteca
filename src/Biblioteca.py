@@ -95,3 +95,45 @@ class Biblioteca:
                 print("\nEl libro ya está disponible\n")
 
             os.system("pause")
+
+    def editarLibro(self, titulo):
+        librosEncontrados = [libro for libro in self.libros if libro.titulo.lower() == titulo.lower()]
+
+        if not librosEncontrados:
+            print("\nLibro no encontrado\n")
+            return
+        
+        libro = librosEncontrados[0]
+
+        print("\nLibro encontrado:\n" + libro.obtenerInformacion() + "\n")
+
+        os.system("pause")
+
+        os.system("cls")
+        print("Campo a editar")
+        print("1) Titulo")
+        print("2) Autor")
+        print("3) Genero")
+        print("4) Año")
+        print("5) Cancelar")
+        opc = int(input("¿Qué deseas editar?: "))
+
+        while opc < 1 and opc > 5:
+            print("Ingresa una opción válida\n")
+            os.system("pause")
+
+        if opc == 5: return
+
+        contenidoNuevo = input("Introduce el contenido nuevo: ")
+
+        if opc == 1: libro.titulo = contenidoNuevo
+        elif opc == 2: libro.autor = contenidoNuevo
+        elif opc == 3: libro.genero = contenidoNuevo
+        elif opc == 4: libro.publicacion = contenidoNuevo
+
+        guardarDatosCSV([libro.toCSV() for libro in self.libros], archivo)
+
+        print("\nLibro actualizado")
+        print(libro.obtenerInformacion(), "\n")
+        
+        os.system("pause")

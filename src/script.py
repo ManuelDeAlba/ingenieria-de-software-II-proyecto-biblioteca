@@ -105,9 +105,7 @@ while ejecutando:
     print("5) Cancelar reserva de libro")
     print("6) Editar información de libro")
     print("7) Eliminar libro")
-    print("8) Prestar libro")
-    print("9) Devolver libro")
-    print("10) Salir")
+    print("8) Salir")
     opcion = input("Ingresa el número de la opción: ")
 
     os.system("cls")

@@ -116,4 +116,4 @@ while ejecutando:
     elif opcion == "5": cancelarLibro()
     elif opcion == "6": editarLibro()
     elif opcion == "7": eliminarLibro()
-    elif opcion == "10": ejecutando = False
+    elif opcion == "8": ejecutando = False

@@ -42,9 +42,18 @@ class Biblioteca:
         self.libros.append(libro)
         guardarDatosCSV([libro.toCSV() for libro in self.libros], archivo)
 
-        print("\nLibro agregado con éxito\n")
-        print(libro.obtenerInformacion(), "\n")
-        os.system("pause")
+        # print("\nLibro agregado con éxito\n")
+        # print(libro.obtenerInformacion(), "\n")
+        # os.system("pause")
+
+    def obtenerLibros(self):
+        lista = []
+
+        if self.libros:
+            for libro in self.libros:
+                lista.append(libro.obtenerInformacion().split("\n"))
+
+        return lista
 
     def mostrarLibros(self):
         if not self.libros:

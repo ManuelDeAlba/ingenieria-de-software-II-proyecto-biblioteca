@@ -2,15 +2,16 @@ import math
 from tkinter import *
 
 class Tabla(Frame):
-    def __init__(self, root, info):
+    def __init__(self, root, info=[]):
         Frame.__init__(self, root)
 
         self.info = info
         self.filasPorPagina = 10
-        self.rows = len(info)
-        self.columns = len(info[0])
+        self.rows = len(self.info)
+        # Si no hay filas entonces no hay columnas
+        self.columns = len(self.info[0]) if self.rows > 0 else 0
         self.paginas = math.ceil(len(self.info) / self.filasPorPagina)
-        self.pagina = 1
+        self.pagina = 1 if self.rows > 0 else 0
 
         self.entries = []
 
@@ -67,8 +68,8 @@ class Tabla(Frame):
 
         # Se actualiza la cantidad de filas y columnas
         self.rows = len(info)
-        self.columns = len(info[0])
-        self.pagina = 1
+        self.columns = len(info[0]) if self.rows > 0 else 0
+        self.pagina = 1 if self.rows > 0 else 0
         # Se calculan las paginas totales
         self.paginas = math.ceil(len(self.info) / self.filasPorPagina)
 

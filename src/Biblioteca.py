@@ -73,11 +73,11 @@ class Biblioteca:
 
         for libro in self.libros:
             if (
-                (tipo == "titulo" and contenido.lower() in libro.titulo.lower()) or
-                (tipo == "autor" and contenido.lower() in libro.autor.lower()) or
-                (tipo == "genero" and contenido.lower() in libro.genero.lower()) or
-                (tipo == "publicacion" and contenido == str(libro.publicacion)) or
-                (tipo == "estado" and libro.estado.lower() == contenido.lower())
+                (tipo.lower() == "titulo" and contenido.lower() in libro.titulo.lower()) or
+                (tipo.lower() == "autor" and contenido.lower() in libro.autor.lower()) or
+                (tipo.lower() == "genero" and contenido.lower() in libro.genero.lower()) or
+                (tipo.lower() == "publicacion" and contenido == str(libro.publicacion)) or
+                (tipo.lower() == "estado" and libro.estado.lower() == contenido.lower())
             ):
                 self.encontrados.append(libro)
 

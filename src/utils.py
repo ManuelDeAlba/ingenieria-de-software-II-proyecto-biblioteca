@@ -5,6 +5,14 @@ LIBRO_ESTADOS = {
     1: "Disponible"
 }
 
+ACENTOS = (
+    ("á", "a"),
+    ("é", "e"),
+    ("í", "i"),
+    ("ó", "o"),
+    ("ú", "u"),
+)
+
 # Funciones para manejar la información en el csv
 def guardarDatosCSV(datos, archivo):
     df = pd.DataFrame(datos) # Se crea el data frame que se va a guardar
@@ -21,3 +29,9 @@ def leerDatosCSV(archivo):
     except:
         # Manejo de errores por si no hay datos o el archivo no existe
         return False
+
+def normalizarTexto(texto):
+    for a, b in ACENTOS:
+        texto = texto.lower().replace(a, b)
+
+    return texto

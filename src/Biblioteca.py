@@ -21,7 +21,7 @@ class Biblioteca:
 
     def cambiarEstado(self, titulo, nuevoEstado):
         # Se busca por el titulo del libro
-        encontrados = list(filter(lambda libro: libro.titulo.lower() == titulo.lower(), self.libros))
+        encontrados = list(filter(lambda libro: normalizarTexto(libro.titulo) == normalizarTexto(titulo), self.libros))
 
         if not len(encontrados): # Si no existe el libro
             raise Exception("ERROR_NO_ENCONTRADO")
@@ -73,11 +73,11 @@ class Biblioteca:
 
         for libro in self.libros:
             if (
-                (tipo.lower() == "titulo" and contenido.lower() in libro.titulo.lower()) or
-                (tipo.lower() == "autor" and contenido.lower() in libro.autor.lower()) or
-                (tipo.lower() == "genero" and contenido.lower() in libro.genero.lower()) or
-                (tipo.lower() == "publicacion" and contenido == str(libro.publicacion)) or
-                (tipo.lower() == "estado" and libro.estado.lower() == contenido.lower())
+                (tipo.lower() == "titulo" and normalizarTexto(contenido) in normalizarTexto(libro.titulo)) or
+                (tipo.lower() == "autor" and normalizarTexto(contenido) in normalizarTexto(libro.autor)) or
+                (tipo.lower() == "genero" and normalizarTexto(contenido) in normalizarTexto(libro.genero)) or
+                (tipo.lower() == "publicacion" and normalizarTexto(contenido) == normalizarTexto(str(libro.publicacion))) or
+                (tipo.lower() == "estado" and normalizarTexto(contenido) == normalizarTexto(libro.estado))
             ):
                 self.encontrados.append(libro)
 
@@ -149,7 +149,7 @@ class Biblioteca:
         os.system("pause")
 
     def eliminarLibro(self, titulo):
-        librosEncontrados = [libro for libro in self.libros if libro.titulo.lower() == titulo.lower()]
+        librosEncontrados = [libro for libro in self.libros if normalizarTexto(libro.titulo) == normalizarTexto(titulo)]
 
         if not librosEncontrados:
             # print("\nLibro no encontrado\n")
@@ -163,7 +163,7 @@ class Biblioteca:
         # if opc.lower() == "n":
         #     return
 
-        librosFiltrados = [libro for libro in self.libros if libro.titulo.lower() != titulo.lower()]
+        librosFiltrados = [libro for libro in self.libros if normalizarTexto(libro.titulo) != normalizarTexto(titulo)]
 
         self.libros = librosFiltrados
         guardarDatosCSV([libro.toCSV() for libro in self.libros], archivo)

@@ -19,12 +19,15 @@ class Tabla(Frame):
         self.crear()
 
         # Botones para cambiar pagina
-        self.boton_anterior = Button(self, text="Anterior", command=lambda: self.cambiarPagina(-1))
-        self.boton_anterior.grid(row=11, column=1)
-        self.label_paginas = Label(self, text=f"{self.pagina}/{self.paginas}")
-        self.label_paginas.grid(row=11, column=2, columnspan=2)
-        self.boton_siguiente = Button(self, text="Siguiente", command=lambda: self.cambiarPagina(1))
-        self.boton_siguiente.grid(row=11, column=4)
+        frame_botones = Frame(self)
+        frame_botones.grid(row=11, column=0, columnspan=self.columns)
+        
+        self.boton_anterior = Button(frame_botones, text="Anterior", command=lambda: self.cambiarPagina(-1))
+        self.boton_anterior.grid(row=0, column=1)
+        self.label_paginas = Label(frame_botones, text=f"{self.pagina}/{self.paginas}")
+        self.label_paginas.grid(row=0, column=2)
+        self.boton_siguiente = Button(frame_botones, text="Siguiente", command=lambda: self.cambiarPagina(1))
+        self.boton_siguiente.grid(row=0, column=3)
 
     def crear(self):
         for i in range(self.rows):

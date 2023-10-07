@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter.ttk import *
-from tkinter.messagebox import showerror
+from tkinter.messagebox import showerror, showinfo
 
 from Biblioteca import *
 from Libro import *
@@ -75,14 +75,14 @@ def abrirVentanaBuscar():
     ventana_buscar.title("Buscar libro")
 
     # Tipo de busqueda
-    label_tipo = Label(ventana_buscar, text="Tipo").grid(row=1, column=1)
+    label_tipo = Label(ventana_buscar, text="Tipo").grid(row=0, column=0)
     combobox_tipo = Combobox(ventana_buscar,
                         values=["Titulo", "Autor", "Genero", "Publicacion", "Estado"],
                         state="readonly")
-    combobox_tipo.grid(row=1, column=2)
-    label_contenido = Label(ventana_buscar, text="Contenido").grid(row=2, column=1)
+    combobox_tipo.grid(row=0, column=1)
+    label_contenido = Label(ventana_buscar, text="Contenido").grid(row=1, column=0)
     input_contenido = Entry(ventana_buscar)
-    input_contenido.grid(row=2, column=2)
+    input_contenido.grid(row=1, column=1)
 
     def buscar():
         encontrados = biblioteca.buscarLibros(combobox_tipo.get(), input_contenido.get())
@@ -106,21 +106,21 @@ def abrirVentanaBuscar():
             ventana_buscar.deiconify()
 
     boton_aceptar = Button(ventana_buscar, text="Buscar", command=buscar)
-    boton_aceptar.grid(row=3, column=1)
+    boton_aceptar.grid(row=2, column=0)
     boton_cancelar = Button(ventana_buscar, text="Cancelar", command=ventana_buscar.destroy)
-    boton_cancelar.grid(row=3, column=2)
+    boton_cancelar.grid(row=2, column=1)
 
 def abrirVentanaEliminar():
     ventana_eliminar = Toplevel(root)
     ventana_eliminar.title("Eliminar libro")
 
     # Input para poner el nombre del libro a eliminar
-    label_titulo = Label(ventana_eliminar, text="Titulo").grid(row=1, column=1)
+    label_titulo = Label(ventana_eliminar, text="Titulo").grid(row=0, column=0)
     input_titulo = Entry(ventana_eliminar)
-    input_titulo.grid(row=1, column=2)
+    input_titulo.grid(row=0, column=1)
 
     # Hace la búsqueda de las opciones de libros a eliminar
-    def aceptar():
+    def buscar():
         encontrados = biblioteca.buscarLibros("titulo", input_titulo.get())
 
         if len(encontrados):
@@ -161,10 +161,126 @@ def abrirVentanaEliminar():
             showerror(title="Libro no encontrado", message="Libro no encontrado")
             ventana_eliminar.deiconify() # Para evitar que con el error se minimice la ventana
 
-    boton_aceptar = Button(ventana_eliminar, text="Aceptar", command=aceptar)
-    boton_aceptar.grid(row=2, column=1)
+    boton_aceptar = Button(ventana_eliminar, text="Buscar", command=buscar)
+    boton_aceptar.grid(row=1, column=0)
     boton_cancelar = Button(ventana_eliminar, text="Cancelar", command=ventana_eliminar.destroy)
-    boton_cancelar.grid(row=2, column=2)
+    boton_cancelar.grid(row=1, column=1)
+
+def abrirVentanaReservar():
+    ventana_reservar = Toplevel(root)
+    ventana_reservar.title("Reservar libro")
+
+    # Input para poner el nombre del libro a reservar
+    label_titulo = Label(ventana_reservar, text="Titulo").grid(row=0, column=0)
+    input_titulo = Entry(ventana_reservar)
+    input_titulo.grid(row=0, column=1)
+
+    def buscar():
+        encontrados = biblioteca.buscarLibros("titulo", input_titulo.get())
+
+        if len(encontrados) > 0:
+            # Si se encontraron libros, se crea una tabla y se abre una ventana
+            ventana_encontrados = Toplevel(ventana_reservar)
+            ventana_encontrados.title("Libros encontrados")
+            
+            # Por cada libro, se obtiene su información y se le agrega el indice
+            info = []
+            for indice, libro in enumerate(encontrados):
+                datos_libro = libro.obtenerInformacion().split("\n")
+                info.append(["Indice: " + str(indice + 1), *datos_libro])
+
+            tabla_encontrados = Tabla(ventana_encontrados, info).pack()
+
+            # Input para introducir el indice del libro que se quiere reservar
+            frame_botones = Frame(ventana_encontrados)
+            frame_botones.pack()
+            
+            label_indice = Label(frame_botones, text="Indice:")
+            label_indice.grid(row=0, column=0)
+            input_indice = Entry(frame_botones)
+            input_indice.grid(row=0, column=1)
+
+            def reservar():
+                # Se reserva el libro con el indice seleccionado
+                error = biblioteca.reservarLibro(encontrados[int(input_indice.get()) - 1])
+
+                # Si la funcion devuelve algo, se muestra el error
+                if error:
+                    showinfo(title=error, message=error)
+
+                ventana_encontrados.destroy()
+                actualizar_tabla()
+
+            boton_reservar = Button(frame_botones, text="Reservar", command=reservar)
+            boton_reservar.grid(row=1, column=0)
+            boton_cancelar = Button(frame_botones, text="Cancelar", command=ventana_encontrados.destroy)
+            boton_cancelar.grid(row=1, column=1)
+        else:
+            showerror(title="No se encontraron libros", message="No se encontraron libros")
+            ventana_reservar.deiconify()
+
+    boton_aceptar = Button(ventana_reservar, text="Buscar", command=buscar)
+    boton_aceptar.grid(row=1, column=0)
+    boton_cancelar = Button(ventana_reservar, text="Cancelar", command=ventana_reservar.destroy)
+    boton_cancelar.grid(row=1, column=1)
+
+def abrirVentanaCancelar():
+    ventana_cancelar = Toplevel(root)
+    ventana_cancelar.title("Cancelar reserevación de libro")
+
+    # Input para poner el nombre del libro a cancelar
+    label_titulo = Label(ventana_cancelar, text="Titulo").grid(row=0, column=0)
+    input_titulo = Entry(ventana_cancelar)
+    input_titulo.grid(row=0, column=1)
+
+    def buscar():
+        encontrados = biblioteca.buscarLibros("titulo", input_titulo.get())
+
+        if len(encontrados) > 0:
+            # Si se encontraron libros, se crea una tabla y se abre una ventana
+            ventana_encontrados = Toplevel(ventana_cancelar)
+            ventana_encontrados.title("Libros encontrados")
+            
+            # Por cada libro, se obtiene su información y se le agrega el indice
+            info = []
+            for indice, libro in enumerate(encontrados):
+                datos_libro = libro.obtenerInformacion().split("\n")
+                info.append(["Indice: " + str(indice + 1), *datos_libro])
+
+            tabla_encontrados = Tabla(ventana_encontrados, info).pack()
+
+            # Input para introducir el indice del libro que se quiere cancelar
+            frame_botones = Frame(ventana_encontrados)
+            frame_botones.pack()
+            
+            label_indice = Label(frame_botones, text="Indice:")
+            label_indice.grid(row=0, column=0)
+            input_indice = Entry(frame_botones)
+            input_indice.grid(row=0, column=1)
+
+            def cancelar():
+                # Se cancela el libro con el indice seleccionado
+                error = biblioteca.cancelarReservacion(encontrados[int(input_indice.get()) - 1])
+
+                # Si la funcion devuelve algo, se muestra el error
+                if error:
+                    showinfo(title=error, message=error)
+
+                ventana_encontrados.destroy()
+                actualizar_tabla()
+
+            boton_cancelar = Button(frame_botones, text="Cancelar reservación", command=cancelar)
+            boton_cancelar.grid(row=1, column=0)
+            boton_cancelar = Button(frame_botones, text="Cancelar", command=ventana_encontrados.destroy)
+            boton_cancelar.grid(row=1, column=1)
+        else:
+            showerror(title="No se encontraron libros", message="No se encontraron libros")
+            ventana_cancelar.deiconify()
+
+    boton_aceptar = Button(ventana_cancelar, text="Buscar", command=buscar)
+    boton_aceptar.grid(row=1, column=0)
+    boton_cancelar = Button(ventana_cancelar, text="Cancelar", command=ventana_cancelar.destroy)
+    boton_cancelar.grid(row=1, column=1)
 
 # Agregar libro (Boton que abre otra ventana)
 boton_agregar = Button(frame_botones, text="Agregar libro", command=abrirVentanaAgregar)
@@ -174,15 +290,21 @@ boton_agregar.grid(row=1, column=1)
 boton_buscar = Button(frame_botones, text="Buscar libro", command=abrirVentanaBuscar)
 boton_buscar.grid(row=1, column=2)
 
-#! Reservar libro (en self.cambiarEstado retornar el libro para después mostrarlo actualizado en otra ventana)
-#! Cancelar reserva de libro (en self.cambiarEstado retornar el libro para después mostrarlo actualizado en otra ventana)
+# Reservar libro
+boton_reservar = Button(frame_botones, text="Reservar libro", command=abrirVentanaReservar)
+boton_reservar.grid(row=1, column=3)
+
+# Cancelar reserva de libro
+boton_cancelar = Button(frame_botones, text="Cancelar libro", command=abrirVentanaCancelar)
+boton_cancelar.grid(row=1, column=4)
+
 #! Editar información de libro (copiar abrirVentanaAgregar y cambiar lo necesario)
 # Eliminar libro
 boton_eliminar = Button(frame_botones, text="Borrar libro", command=abrirVentanaEliminar)
-boton_eliminar.grid(row=1, column=3)
+boton_eliminar.grid(row=1, column=5)
 
 # Salir
 boton_salir = Button(frame_botones, text="Salir", command=lambda: root.destroy())
-boton_salir.grid(row=1, column=4)
+boton_salir.grid(row=1, column=6)
 
 root.mainloop()

@@ -73,9 +73,9 @@ class Biblioteca:
 
         for libro in self.libros:
             if (
-                (tipo.lower() == "titulo" and normalizarTexto(contenido) in normalizarTexto(libro.titulo)) or
-                (tipo.lower() == "autor" and normalizarTexto(contenido) in normalizarTexto(libro.autor)) or
-                (tipo.lower() == "genero" and normalizarTexto(contenido) in normalizarTexto(libro.genero)) or
+                (tipo.lower() == "titulo" and normalizarTexto(contenido) in normalizarTexto(libro.titulo).split(" ")) or
+                (tipo.lower() == "autor" and normalizarTexto(contenido) in normalizarTexto(libro.autor).split(" ")) or
+                (tipo.lower() == "genero" and normalizarTexto(contenido) in normalizarTexto(libro.genero).split(" ")) or
                 (tipo.lower() == "publicacion" and normalizarTexto(contenido) == normalizarTexto(str(libro.publicacion))) or
                 (tipo.lower() == "estado" and normalizarTexto(contenido) == normalizarTexto(libro.estado))
             ):
@@ -148,27 +148,8 @@ class Biblioteca:
         
         os.system("pause")
 
-    def eliminarLibro(self, titulo):
-        librosEncontrados = [libro for libro in self.libros if normalizarTexto(libro.titulo) == normalizarTexto(titulo)]
+    def eliminarLibro(self, libroABorrar):
+        # Se elimina el libro que se le pase por parametro
+        self.libros = [libro for libro in self.libros if libro != libroABorrar]
 
-        if not librosEncontrados:
-            # print("\nLibro no encontrado\n")
-            # os.system("pause")
-            return False
-        
-        # print("\nLibro encontrado:\n" + librosEncontrados[0].obtenerInformacion())
-
-        # opc = input("\nEliminar (s/n): ")
-
-        # if opc.lower() == "n":
-        #     return
-
-        librosFiltrados = [libro for libro in self.libros if normalizarTexto(libro.titulo) != normalizarTexto(titulo)]
-
-        self.libros = librosFiltrados
         guardarDatosCSV([libro.toCSV() for libro in self.libros], archivo)
-
-        return True
-
-        # print("\nLibro eliminado\n")
-        # os.system("pause")

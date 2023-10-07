@@ -174,9 +174,9 @@ boton_agregar.grid(row=1, column=1)
 boton_buscar = Button(frame_botones, text="Buscar libro", command=abrirVentanaBuscar)
 boton_buscar.grid(row=1, column=2)
 
-#! Reservar libro
-#! Cancelar reserva de libro
-#! Editar información de libro
+#! Reservar libro (en self.cambiarEstado retornar el libro para después mostrarlo actualizado en otra ventana)
+#! Cancelar reserva de libro (en self.cambiarEstado retornar el libro para después mostrarlo actualizado en otra ventana)
+#! Editar información de libro (copiar abrirVentanaAgregar y cambiar lo necesario)
 # Eliminar libro
 boton_eliminar = Button(frame_botones, text="Borrar libro", command=abrirVentanaEliminar)
 boton_eliminar.grid(row=1, column=3)
@@ -186,11 +186,3 @@ boton_salir = Button(frame_botones, text="Salir", command=lambda: root.destroy()
 boton_salir.grid(row=1, column=4)
 
 root.mainloop()
-#     print("Eliminar libro\n")
-
-#     if not biblioteca.libros:
-#         print("No hay libros registrados\n")
-#         return
-    
-#     titulo = input("Introduce el nombre del libro a eliminar: ")
-#     biblioteca.eliminarLibro(titulo)

@@ -19,24 +19,14 @@ class Biblioteca:
             for libro in datos:
                 self.libros.append(Libro(*libro))
 
-    def cambiarEstado(self, titulo, nuevoEstado):
-        # Se busca por el titulo del libro
-        encontrados = list(filter(lambda libro: normalizarTexto(libro.titulo) == normalizarTexto(titulo), self.libros))
-
-        if not len(encontrados): # Si no existe el libro
-            raise Exception("ERROR_NO_ENCONTRADO")
-        elif encontrados[0].estado == LIBRO_ESTADOS[nuevoEstado]: # Si se queda con el mismo estado
+    def cambiarEstado(self, libroAReservar, nuevoEstado):
+        if libroAReservar.estado == LIBRO_ESTADOS[nuevoEstado]: # Si se queda con el mismo estado
             raise Exception("ERROR_ESTADO")
         else: # Si encuentra el libro, le pone el nuevo estado (0: no disponible, 1: disponible)
-            encontrados[0].estado = LIBRO_ESTADOS[nuevoEstado]
+            libroAReservar.estado = LIBRO_ESTADOS[nuevoEstado]
 
             # Guarda los libros con los cambios que se hayan hecho
             guardarDatosCSV([libro.toCSV() for libro in self.libros], archivo)
-
-            # Se muestra el libro actualizado
-            print("\nEstado actualizado\n")
-            print(encontrados[0].obtenerInformacion(),"\n")
-            os.system("pause")
 
     def agregarLibro(self, libro):
         self.libros.append(libro)
@@ -83,27 +73,19 @@ class Biblioteca:
 
         return self.encontrados
     
-    def reservarLibro(self, titulo):
+    def reservarLibro(self, libroAReservar):
         try:
-            self.cambiarEstado(titulo, 0)
+            self.cambiarEstado(libroAReservar, 0)
         except Exception as err:
-            if str(err) == "ERROR_NO_ENCONTRADO":
-                print("\nLibro no encontrado\n")
-            elif str(err) == "ERROR_ESTADO":
-                print("\nEl libro ya está reservado\n")
+            if str(err) == "ERROR_ESTADO":
+                return "El libro ya está reservado"
 
-            os.system("pause")
-
-    def cancelarReservacion(self, titulo):
+    def cancelarReservacion(self, libroACancelar):
         try:
-            self.cambiarEstado(titulo, 1)
+            self.cambiarEstado(libroACancelar, 1)
         except Exception as err:
-            if str(err) == "ERROR_NO_ENCONTRADO":
-                print("\nLibro no encontrado\n")
-            elif str(err) == "ERROR_ESTADO":
-                print("\nEl libro ya está disponible\n")
-
-            os.system("pause")
+            if str(err) == "ERROR_ESTADO":
+                return "El libro ya está disponible"
 
     def editarLibro(self, titulo):
         librosEncontrados = [libro for libro in self.libros if libro.titulo.lower() == titulo.lower()]

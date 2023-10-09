@@ -282,6 +282,98 @@ def abrirVentanaCancelar():
     boton_cancelar = Button(ventana_cancelar, text="Cancelar", command=ventana_cancelar.destroy)
     boton_cancelar.grid(row=1, column=1)
 
+def abrirVentanaEditar():
+    ventana_editar = Toplevel(root)
+    ventana_editar.title("Editar libro")
+
+    label_titulo = Label(ventana_editar, text="Titulo").grid(row=0, column=0)
+    input_titulo = Entry(ventana_editar)
+    input_titulo.grid(row=0, column=1)
+
+    def buscar():
+        encontrados = biblioteca.buscarLibros("titulo", input_titulo.get())
+
+        if len(encontrados) > 0:
+            # Si se encontraron libros, se crea una tabla y se abre una ventana
+            ventana_encontrados = Toplevel(ventana_editar)
+            ventana_encontrados.title("Libros encontrados")
+            
+            # Por cada libro, se obtiene su información y se le agrega el indice
+            info = []
+            for indice, libro in enumerate(encontrados):
+                datos_libro = libro.obtenerInformacion().split("\n")
+                info.append(["Indice: " + str(indice + 1), *datos_libro])
+
+            tabla_encontrados = Tabla(ventana_encontrados, info).pack()
+
+            # Input para introducir el indice del libro que se quiere cancelar
+            frame_botones = Frame(ventana_encontrados)
+            frame_botones.pack()
+            
+            label_indice = Label(frame_botones, text="Indice:")
+            label_indice.grid(row=0, column=0)
+            input_indice = Entry(frame_botones)
+            input_indice.grid(row=0, column=1)
+
+            def editar():
+                ventana_editar_libro = Toplevel(ventana_encontrados)
+                ventana_editar_libro.title("Editar libro")
+
+                libroSeleccionado = encontrados[int(input_indice.get()) - 1]
+
+                # Se ponen los inputs para editar la información
+                label_titulo = Label(ventana_editar_libro, text="Titulo").grid(row=1, column=0)
+                input_titulo = Entry(ventana_editar_libro)
+                input_titulo.insert(0, libroSeleccionado.titulo)
+                input_titulo.grid(row=1, column=1)
+
+                label_autor = Label(ventana_editar_libro, text="Autor").grid(row=2, column=0)
+                input_autor = Entry(ventana_editar_libro)
+                input_autor.insert(0, libroSeleccionado.autor)
+                input_autor.grid(row=2, column=1)
+
+                label_genero = Label(ventana_editar_libro, text="Genero").grid(row=3, column=0)
+                input_genero = Entry(ventana_editar_libro)
+                input_genero.insert(0, libroSeleccionado.genero)
+                input_genero.grid(row=3, column=1)
+
+                label_publicacion = Label(ventana_editar_libro, text="Publicacion").grid(row=4, column=0)
+                input_publicacion = Entry(ventana_editar_libro)
+                input_publicacion.insert(0, libroSeleccionado.publicacion)
+                input_publicacion.grid(row=4, column=1)
+
+                def aceptar():
+                    nuevaInformacion = {
+                        "titulo": input_titulo.get(),
+                        "autor": input_autor.get(),
+                        "genero": input_genero.get(),
+                        "publicacion": input_publicacion.get()
+                    }
+
+                    biblioteca.editarLibro(libroSeleccionado, nuevaInformacion)
+
+                    # Después de editar el libro, actualizamos los datos de la tabla
+                    actualizar_tabla()
+                    ventana_editar_libro.destroy()
+
+                boton_aceptar = Button(ventana_editar_libro, text="Aceptar", command=aceptar)
+                boton_aceptar.grid(row=5, column=0)
+                boton_cancelar = Button(ventana_editar_libro, text="Cancelar", command=ventana_editar_libro.destroy)
+                boton_cancelar.grid(row=5, column=1)
+
+            boton_cancelar = Button(frame_botones, text="Editar", command=editar)
+            boton_cancelar.grid(row=1, column=0)
+            boton_cancelar = Button(frame_botones, text="Cancelar", command=ventana_encontrados.destroy)
+            boton_cancelar.grid(row=1, column=1)
+        else:
+            showerror(title="No se encontraron libros", message="No se encontraron libros")
+            ventana_editar.deiconify()
+
+    boton_buscar = Button(ventana_editar, text="Buscar", command=buscar)
+    boton_buscar.grid(row=5, column=0)
+    boton_cancelar = Button(ventana_editar, text="Cancelar", command=ventana_editar.destroy)
+    boton_cancelar.grid(row=5, column=1)
+
 # Agregar libro (Boton que abre otra ventana)
 boton_agregar = Button(frame_botones, text="Agregar libro", command=abrirVentanaAgregar)
 boton_agregar.grid(row=1, column=1)
@@ -298,13 +390,16 @@ boton_reservar.grid(row=1, column=3)
 boton_cancelar = Button(frame_botones, text="Cancelar libro", command=abrirVentanaCancelar)
 boton_cancelar.grid(row=1, column=4)
 
-#! Editar información de libro (copiar abrirVentanaAgregar y cambiar lo necesario)
+# Editar información de libro
+boton_editar = Button(frame_botones, text="Editar libro", command=abrirVentanaEditar)
+boton_editar.grid(row=1, column=5)
+
 # Eliminar libro
 boton_eliminar = Button(frame_botones, text="Borrar libro", command=abrirVentanaEliminar)
-boton_eliminar.grid(row=1, column=5)
+boton_eliminar.grid(row=1, column=6)
 
 # Salir
 boton_salir = Button(frame_botones, text="Salir", command=lambda: root.destroy())
-boton_salir.grid(row=1, column=6)
+boton_salir.grid(row=1, column=7)
 
 root.mainloop()

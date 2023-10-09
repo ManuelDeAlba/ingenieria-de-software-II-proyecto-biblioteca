@@ -87,48 +87,13 @@ class Biblioteca:
             if str(err) == "ERROR_ESTADO":
                 return "El libro ya está disponible"
 
-    def editarLibro(self, titulo):
-        librosEncontrados = [libro for libro in self.libros if libro.titulo.lower() == titulo.lower()]
-
-        if not librosEncontrados:
-            print("\nLibro no encontrado\n")
-            os.system("pause")
-            return
-        
-        libro = librosEncontrados[0]
-
-        print("\nLibro encontrado:\n" + libro.obtenerInformacion() + "\n")
-
-        os.system("pause")
-
-        os.system("cls")
-        print("Campo a editar")
-        print("1) Titulo")
-        print("2) Autor")
-        print("3) Genero")
-        print("4) Año")
-        print("5) Cancelar")
-        opc = int(input("¿Qué deseas editar?: "))
-
-        while opc < 1 and opc > 5:
-            print("Ingresa una opción válida\n")
-            os.system("pause")
-
-        if opc == 5: return
-
-        contenidoNuevo = input("Introduce el contenido nuevo: ")
-
-        if opc == 1: libro.titulo = contenidoNuevo
-        elif opc == 2: libro.autor = contenidoNuevo
-        elif opc == 3: libro.genero = contenidoNuevo
-        elif opc == 4: libro.publicacion = contenidoNuevo
+    def editarLibro(self, libroAEditar, nuevaInformacion):
+        libroAEditar.titulo = nuevaInformacion["titulo"]
+        libroAEditar.autor = nuevaInformacion["autor"]
+        libroAEditar.genero = nuevaInformacion["genero"]
+        libroAEditar.publicacion = nuevaInformacion["publicacion"]
 
         guardarDatosCSV([libro.toCSV() for libro in self.libros], archivo)
-
-        print("\nLibro actualizado")
-        print(libro.obtenerInformacion(), "\n")
-        
-        os.system("pause")
 
     def eliminarLibro(self, libroABorrar):
         # Se elimina el libro que se le pase por parametro

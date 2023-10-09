@@ -354,6 +354,7 @@ def abrirVentanaEditar():
 
                     # Después de editar el libro, actualizamos los datos de la tabla
                     actualizar_tabla()
+                    ventana_encontrados.destroy()
                     ventana_editar_libro.destroy()
 
                 boton_aceptar = Button(ventana_editar_libro, text="Aceptar", command=aceptar)

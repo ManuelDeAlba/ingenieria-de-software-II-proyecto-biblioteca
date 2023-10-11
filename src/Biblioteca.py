@@ -63,9 +63,9 @@ class Biblioteca:
 
         for libro in self.libros:
             if (
-                (tipo.lower() == "titulo" and normalizarTexto(contenido) in normalizarTexto(libro.titulo).split(" ")) or
-                (tipo.lower() == "autor" and normalizarTexto(contenido) in normalizarTexto(libro.autor).split(" ")) or
-                (tipo.lower() == "genero" and normalizarTexto(contenido) in normalizarTexto(libro.genero).split(" ")) or
+                (tipo.lower() == "titulo" and normalizarTexto(contenido) in normalizarTexto(libro.titulo)) or
+                (tipo.lower() == "autor" and normalizarTexto(contenido) in normalizarTexto(libro.autor)) or
+                (tipo.lower() == "genero" and normalizarTexto(contenido) in normalizarTexto(libro.genero)) or
                 (tipo.lower() == "publicacion" and normalizarTexto(contenido) == normalizarTexto(str(libro.publicacion))) or
                 (tipo.lower() == "estado" and normalizarTexto(contenido) == normalizarTexto(libro.estado))
             ):

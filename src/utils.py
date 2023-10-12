@@ -1,4 +1,5 @@
 import pandas as pd
+import re
 
 LIBRO_ESTADOS = {
     0: "No disponible",
@@ -31,6 +32,9 @@ def leerDatosCSV(archivo):
         return False
 
 def normalizarTexto(texto):
+    # Se quitan los espacios extras
+    texto = re.sub(r'\s+', ' ', texto.strip())
+    
     for a, b in ACENTOS:
         texto = texto.lower().replace(a, b)
 

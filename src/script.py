@@ -11,6 +11,7 @@ biblioteca = Biblioteca()
 root = Tk()
 root.title("Biblioteca")
 root.resizable(0, 0)
+root.config(padx=20, pady=20)
 
 # Titulo de la aplicacion
 Label(root, text="Biblioteca", font=('Arial', 16, 'bold')).pack(pady=10)
@@ -23,7 +24,7 @@ tabla.pack()
 
 # Frame para poner los botones con las acciones
 frame_botones = Frame(root)
-frame_botones.pack(pady=10)
+frame_botones.pack()
 
 # Para obtener la lista actualizada de libros y mostrarlos
 def actualizar_tabla():
@@ -33,7 +34,7 @@ def actualizar_tabla():
 
 # Funciones para abrir las ventanas
 def abrirVentanaAgregar():
-    ventana_agregar = Toplevel(root)
+    ventana_agregar = Toplevel(root, padx=20, pady=20)
     ventana_agregar.title("Agregar libro")
 
     # Se ponen los inputs para agregar la información
@@ -71,7 +72,7 @@ def abrirVentanaAgregar():
     boton_cancelar.grid(row=5, column=2)
 
 def abrirVentanaBuscar():
-    ventana_buscar = Toplevel(root)
+    ventana_buscar = Toplevel(root, padx=20, pady=20)
     ventana_buscar.title("Buscar libro")
 
     # Tipo de busqueda
@@ -89,7 +90,7 @@ def abrirVentanaBuscar():
 
         if len(encontrados) > 0:
             # Si se encontraron libros, se crea una tabla y se abre una ventana
-            ventana_encontrados = Toplevel(ventana_buscar)
+            ventana_encontrados = Toplevel(ventana_buscar, padx=20, pady=20)
             ventana_encontrados.title("Libros encontrados")
             
             # Por cada libro, se obtiene su información y se le agrega el indice
@@ -111,7 +112,7 @@ def abrirVentanaBuscar():
     boton_cancelar.grid(row=2, column=1)
 
 def abrirVentanaEliminar():
-    ventana_eliminar = Toplevel(root)
+    ventana_eliminar = Toplevel(root, padx=20, pady=20)
     ventana_eliminar.title("Eliminar libro")
 
     # Input para poner el nombre del libro a eliminar
@@ -125,7 +126,7 @@ def abrirVentanaEliminar():
 
         if len(encontrados):
             # Se abre otra ventana con todos los libros encontrados
-            ventana_encontrados = Toplevel(ventana_eliminar)
+            ventana_encontrados = Toplevel(ventana_eliminar, padx=20, pady=20)
             ventana_encontrados.title("Libros encontrados")
 
             # Tabla con los libros encontrados
@@ -167,7 +168,7 @@ def abrirVentanaEliminar():
     boton_cancelar.grid(row=1, column=1)
 
 def abrirVentanaReservar():
-    ventana_reservar = Toplevel(root)
+    ventana_reservar = Toplevel(root, padx=20, pady=20)
     ventana_reservar.title("Reservar libro")
 
     # Input para poner el nombre del libro a reservar
@@ -180,7 +181,7 @@ def abrirVentanaReservar():
 
         if len(encontrados) > 0:
             # Si se encontraron libros, se crea una tabla y se abre una ventana
-            ventana_encontrados = Toplevel(ventana_reservar)
+            ventana_encontrados = Toplevel(ventana_reservar, padx=20, pady=20)
             ventana_encontrados.title("Libros encontrados")
             
             # Por cada libro, se obtiene su información y se le agrega el indice
@@ -225,7 +226,7 @@ def abrirVentanaReservar():
     boton_cancelar.grid(row=1, column=1)
 
 def abrirVentanaCancelar():
-    ventana_cancelar = Toplevel(root)
+    ventana_cancelar = Toplevel(root, padx=20, pady=20)
     ventana_cancelar.title("Cancelar reserevación de libro")
 
     # Input para poner el nombre del libro a cancelar
@@ -238,7 +239,7 @@ def abrirVentanaCancelar():
 
         if len(encontrados) > 0:
             # Si se encontraron libros, se crea una tabla y se abre una ventana
-            ventana_encontrados = Toplevel(ventana_cancelar)
+            ventana_encontrados = Toplevel(ventana_cancelar, padx=20, pady=20)
             ventana_encontrados.title("Libros encontrados")
             
             # Por cada libro, se obtiene su información y se le agrega el indice
@@ -283,7 +284,7 @@ def abrirVentanaCancelar():
     boton_cancelar.grid(row=1, column=1)
 
 def abrirVentanaEditar():
-    ventana_editar = Toplevel(root)
+    ventana_editar = Toplevel(root, padx=20, pady=20)
     ventana_editar.title("Editar libro")
 
     label_titulo = Label(ventana_editar, text="Titulo").grid(row=0, column=0)
@@ -295,7 +296,7 @@ def abrirVentanaEditar():
 
         if len(encontrados) > 0:
             # Si se encontraron libros, se crea una tabla y se abre una ventana
-            ventana_encontrados = Toplevel(ventana_editar)
+            ventana_encontrados = Toplevel(ventana_editar, padx=20, pady=20)
             ventana_encontrados.title("Libros encontrados")
             
             # Por cada libro, se obtiene su información y se le agrega el indice
@@ -316,7 +317,7 @@ def abrirVentanaEditar():
             input_indice.grid(row=0, column=1)
 
             def editar():
-                ventana_editar_libro = Toplevel(ventana_encontrados)
+                ventana_editar_libro = Toplevel(ventana_encontrados, padx=20, pady=20)
                 ventana_editar_libro.title("Editar libro")
 
                 libroSeleccionado = encontrados[int(input_indice.get()) - 1]

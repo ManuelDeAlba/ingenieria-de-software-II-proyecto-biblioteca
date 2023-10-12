@@ -20,7 +20,7 @@ class Tabla(Frame):
 
         # Botones para cambiar pagina
         frame_botones = Frame(self)
-        frame_botones.grid(row=11, column=0, columnspan=self.columns)
+        frame_botones.grid(row=11, column=0, columnspan=self.columns, pady=10)
         
         self.boton_anterior = Button(frame_botones, text="Anterior", command=lambda: self.cambiarPagina(-1))
         self.boton_anterior.grid(row=0, column=1)

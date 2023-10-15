@@ -124,6 +124,8 @@ class App(ctk.CTk):
                             values=["Titulo", "Autor", "Genero", "Publicacion", "Estado"],
                             state="readonly", width=160)
         combobox_tipo.grid(row=0, column=1)
+        combobox_tipo.set("Titulo") #Colocamos por default la casilla de Titulo
+        
         label_contenido = ctk.CTkLabel(ventana_buscar, text="Contenido").grid(row=1, column=0)
         input_contenido = ctk.CTkEntry(ventana_buscar)
         input_contenido.grid(row=1, column=1)

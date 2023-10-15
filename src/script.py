@@ -17,9 +17,9 @@ root.config(padx=20, pady=20)
 Label(root, text="Biblioteca", font=('Arial', 16, 'bold')).pack(pady=10)
 
 # Mostrar libros (Tabla con los libros)
-libros = biblioteca.obtenerLibros()
-datos_tabla = [["Indice: " + str(x + 1), *y] for x, y in enumerate(libros)]
-tabla = Tabla(root, datos_tabla)
+libros = biblioteca.obtenerCamposLibros()
+datos_tabla = [[str(x + 1), *y] for x, y in enumerate(libros)]
+tabla = Tabla(root, TITULOS, datos_tabla)
 tabla.pack()
 
 # Frame para poner los botones con las acciones
@@ -28,9 +28,19 @@ frame_botones.pack()
 
 # Para obtener la lista actualizada de libros y mostrarlos
 def actualizar_tabla():
-    libros = biblioteca.obtenerLibros()
-    datos_tabla = [["Indice: " + str(x + 1), *y] for x, y in enumerate(libros)]
+    libros = biblioteca.obtenerCamposLibros()
+    datos_tabla = [[str(x + 1), *y] for x, y in enumerate(libros)]
     tabla.actualizar(datos_tabla)
+
+def generarTablaLibros(titulos, libros, ventana):
+    info = []
+    for indice, libro in enumerate(libros):
+        datos_libro = libro.toCSV()
+        info.append([str(indice + 1), *datos_libro])
+
+    tabla_encontrados = Tabla(ventana, titulos, info)
+
+    return tabla_encontrados
 
 # Funciones para abrir las ventanas
 def abrirVentanaAgregar():
@@ -93,13 +103,8 @@ def abrirVentanaBuscar():
             ventana_encontrados = Toplevel(ventana_buscar, padx=20, pady=20)
             ventana_encontrados.title("Libros encontrados")
             
-            # Por cada libro, se obtiene su información y se le agrega el indice
-            info = []
-            for indice, libro in enumerate(encontrados):
-                datos_libro = libro.obtenerInformacion().split("\n")
-                info.append(["Indice: " + str(indice + 1), *datos_libro])
-
-            tabla_encontrados = Tabla(ventana_encontrados, info).pack()
+            tabla_encontrados = generarTablaLibros(TITULOS, encontrados, ventana_encontrados)
+            tabla_encontrados.pack()
 
             boton_salir = Button(ventana_encontrados, text="Salir", command=ventana_encontrados.destroy).pack()
         else:
@@ -129,14 +134,8 @@ def abrirVentanaEliminar():
             ventana_encontrados = Toplevel(ventana_eliminar, padx=20, pady=20)
             ventana_encontrados.title("Libros encontrados")
 
-            # Tabla con los libros encontrados
-            info = []
-            for indice, libro in enumerate(encontrados):
-                datos_libro = libro.obtenerInformacion().split("\n")
-                info.append(["Indice: " + str(indice + 1), *datos_libro])
-            
-            tabla = Tabla(ventana_encontrados, info)
-            tabla.pack()
+            tabla_encontrados = generarTablaLibros(TITULOS, encontrados, ventana_encontrados)
+            tabla_encontrados.pack()
 
             # Input para introducir el indice del libro que se quiere borrar
             frame_botones = Frame(ventana_encontrados)
@@ -184,13 +183,8 @@ def abrirVentanaReservar():
             ventana_encontrados = Toplevel(ventana_reservar, padx=20, pady=20)
             ventana_encontrados.title("Libros encontrados")
             
-            # Por cada libro, se obtiene su información y se le agrega el indice
-            info = []
-            for indice, libro in enumerate(encontrados):
-                datos_libro = libro.obtenerInformacion().split("\n")
-                info.append(["Indice: " + str(indice + 1), *datos_libro])
-
-            tabla_encontrados = Tabla(ventana_encontrados, info).pack()
+            tabla_encontrados = generarTablaLibros(TITULOS, encontrados, ventana_encontrados)
+            tabla_encontrados.pack()
 
             # Input para introducir el indice del libro que se quiere reservar
             frame_botones = Frame(ventana_encontrados)
@@ -242,13 +236,8 @@ def abrirVentanaCancelar():
             ventana_encontrados = Toplevel(ventana_cancelar, padx=20, pady=20)
             ventana_encontrados.title("Libros encontrados")
             
-            # Por cada libro, se obtiene su información y se le agrega el indice
-            info = []
-            for indice, libro in enumerate(encontrados):
-                datos_libro = libro.obtenerInformacion().split("\n")
-                info.append(["Indice: " + str(indice + 1), *datos_libro])
-
-            tabla_encontrados = Tabla(ventana_encontrados, info).pack()
+            tabla_encontrados = generarTablaLibros(TITULOS, encontrados, ventana_encontrados)
+            tabla_encontrados.pack()
 
             # Input para introducir el indice del libro que se quiere cancelar
             frame_botones = Frame(ventana_encontrados)
@@ -299,13 +288,8 @@ def abrirVentanaEditar():
             ventana_encontrados = Toplevel(ventana_editar, padx=20, pady=20)
             ventana_encontrados.title("Libros encontrados")
             
-            # Por cada libro, se obtiene su información y se le agrega el indice
-            info = []
-            for indice, libro in enumerate(encontrados):
-                datos_libro = libro.obtenerInformacion().split("\n")
-                info.append(["Indice: " + str(indice + 1), *datos_libro])
-
-            tabla_encontrados = Tabla(ventana_encontrados, info).pack()
+            tabla_encontrados = generarTablaLibros(TITULOS, encontrados, ventana_encontrados)
+            tabla_encontrados.pack()
 
             # Input para introducir el indice del libro que se quiere cancelar
             frame_botones = Frame(ventana_encontrados)

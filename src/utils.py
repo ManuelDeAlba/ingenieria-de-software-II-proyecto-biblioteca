@@ -14,6 +14,9 @@ ACENTOS = (
     ("ú", "u"),
 )
 
+# Titulos que se usan para los campos de los libros
+TITULOS = ["Indice", "Titulo", "Autor", "Genero", "Publicacion", "Estado"]
+
 # Funciones para manejar la información en el csv
 def guardarDatosCSV(datos, archivo):
     df = pd.DataFrame(datos) # Se crea el data frame que se va a guardar

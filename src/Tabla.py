@@ -2,9 +2,10 @@ import math
 from tkinter import *
 
 class Tabla(Frame):
-    def __init__(self, root, info=[]):
+    def __init__(self, root, titulos=[], info=[]):
         Frame.__init__(self, root)
 
+        self.titulos = titulos
         self.info = info
         self.filasPorPagina = 10
         self.rows = len(self.info)
@@ -30,6 +31,20 @@ class Tabla(Frame):
         self.boton_siguiente.grid(row=0, column=3)
 
     def crear(self):
+        # Se insertan los titulos
+        for x, titulo in enumerate(self.titulos):
+            # Se crea el input 
+            self.entry = Entry(self, fg='blue', width=35)
+
+            # Se posiciona y se insertan los datos
+            self.entry.grid(row=0, column=x)
+            self.entry.insert(END, titulo)
+
+            # Se evita que se pueda escribir
+            self.entry.config(state="readonly")
+            self.entries.append(self.entry)
+
+        # Se insertan los datos
         for i in range(self.rows):
             for j in range(self.columns):
                 # Si está dentro del rango que se tiene que mostrar (paginacion)
@@ -38,7 +53,7 @@ class Tabla(Frame):
                     self.entry = Entry(self, fg='black', width=35)
 
                     # Se posiciona y se insertan los datos
-                    self.entry.grid(row=i % self.filasPorPagina, column=j)
+                    self.entry.grid(row=1 + i % self.filasPorPagina, column=j)
                     self.entry.insert(END, self.info[i][j])
 
                     # Se evita que se pueda escribir

@@ -15,7 +15,8 @@ ACENTOS = (
 )
 
 # Titulos que se usan para los campos de los libros
-TITULOS = ["Indice", "Titulo", "Autor", "Genero", "Publicacion", "Estado"]
+TITULOS = ("Indice", "Titulo", "Autor", "Genero", "Publicacion", "Estado")
+TAMANOS = (5, 50, 35, 20, 15, 20)
 
 # Funciones para manejar la información en el csv
 def guardarDatosCSV(datos, archivo):

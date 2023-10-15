@@ -2,11 +2,12 @@ import math
 from tkinter import *
 
 class Tabla(Frame):
-    def __init__(self, root, titulos=[], info=[]):
+    def __init__(self, root, titulos=[], info=[], tamanos=[]):
         Frame.__init__(self, root)
 
         self.titulos = titulos
         self.info = info
+        self.tamanos = tamanos or [30]*len(self.info)
         self.filasPorPagina = 10
         self.rows = len(self.info)
         # Si no hay filas entonces no hay columnas
@@ -34,7 +35,7 @@ class Tabla(Frame):
         # Se insertan los titulos
         for x, titulo in enumerate(self.titulos):
             # Se crea el input 
-            self.entry = Entry(self, fg='blue', width=35)
+            self.entry = Entry(self, fg='blue', width=self.tamanos[x])
 
             # Se posiciona y se insertan los datos
             self.entry.grid(row=0, column=x)
@@ -50,7 +51,7 @@ class Tabla(Frame):
                 # Si está dentro del rango que se tiene que mostrar (paginacion)
                 if (self.pagina - 1) * self.filasPorPagina <= i < self.pagina * self.filasPorPagina:
                     # Se crea el input 
-                    self.entry = Entry(self, fg='black', width=35)
+                    self.entry = Entry(self, fg='black', width=self.tamanos[j])
 
                     # Se posiciona y se insertan los datos
                     self.entry.grid(row=1 + i % self.filasPorPagina, column=j)

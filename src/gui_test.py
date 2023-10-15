@@ -14,12 +14,6 @@ biblioteca = Biblioteca()
 customtkinter.set_appearance_mode("System")  # Modes: "System" (standard), "Dark", "Light"
 customtkinter.set_default_color_theme("green")  # Themes: "blue" (standard), "green", "dark-blue"
 
-libros = biblioteca.obtenerLibros()
-datos_tabla = [["Indice: " + str(x + 1), *y] for x, y in enumerate(libros)]
-tabla = Tabla(root, datos_tabla)
-tabla.pack()
-
-
 class App(customtkinter.CTk):
     def __init__(self):
         super().__init__()
@@ -27,6 +21,12 @@ class App(customtkinter.CTk):
         # configure window
         self.title("Proyecto Biblioteca")
         self.geometry(f"{1100}x{580}")
+
+        libros = biblioteca.obtenerLibros()
+        datos_tabla = [["Indice: " + str(x + 1), *y] for x, y in enumerate(libros)]
+        
+        self.tabla = Tabla(self, datos_tabla)
+        self.tabla.grid(column=1, row=0)
 
         # configure grid layout (4x4)
         self.grid_columnconfigure(1, weight=1)
@@ -51,7 +51,7 @@ class App(customtkinter.CTk):
         self.sidebar_button_5.grid(row=5, column=0, padx=20, pady=10)
         self.sidebar_button_6 = customtkinter.CTkButton(self.sidebar_frame, command=self.abrirVentanaEliminar, text="Borrar Libro")
         self.sidebar_button_6.grid(row=6, column=0, padx=20, pady=10)
-        self.sidebar_button_7 = customtkinter.CTkButton(self.sidebar_frame, command=lambda: root.destroy(), text="Salir")
+        self.sidebar_button_7 = customtkinter.CTkButton(self.sidebar_frame, command=lambda: self.destroy(), text="Salir")
         self.sidebar_button_7.grid(row=7, column=0, padx=20, pady=10)
         
         self.appearance_mode_label = customtkinter.CTkLabel(self.sidebar_frame, text="Tema:", anchor="w")
@@ -82,13 +82,13 @@ class App(customtkinter.CTk):
     def sidebar_button_event(self):
         print("sidebar_button click")
         
-    def actualizar_tabla():
+    def actualizar_tabla(self):
         libros = biblioteca.obtenerLibros()
         datos_tabla = [["Indice: " + str(x + 1), *y] for x, y in enumerate(libros)]
-        tabla.actualizar(datos_tabla)
+        self.tabla.actualizar(datos_tabla)
         
-    def abrirVentanaAgregar():
-        ventana_agregar = Toplevel(root, padx=20, pady=20)
+    def abrirVentanaAgregar(self):
+        ventana_agregar = Toplevel(self, padx=20, pady=20)
         ventana_agregar.title("Agregar libro")
 
         # Se ponen los inputs para agregar la información
@@ -118,20 +118,20 @@ class App(customtkinter.CTk):
             input_publicacion.delete(0, END)
 
             # Después de guardar el libro, actualizamos los datos de la tabla
-            actualizar_tabla()
+            self.actualizar_tabla()
 
         boton_agregar = Button(ventana_agregar, text="Agregar", command=guardar)
         boton_agregar.grid(row=5, column=1)
         boton_cancelar = Button(ventana_agregar, text="Cancelar", command=lambda: ventana_agregar.destroy())
         boton_cancelar.grid(row=5, column=2)
         
-    def abrirVentanaBuscar():
-        ventana_buscar = Toplevel(root, padx=20, pady=20)
+    def abrirVentanaBuscar(self):
+        ventana_buscar = Toplevel(self, padx=20, pady=20)
         ventana_buscar.title("Buscar libro")
 
         # Tipo de busqueda
         label_tipo = Label(ventana_buscar, text="Tipo").grid(row=0, column=0)
-        combobox_tipo = Combobox(ventana_buscar,
+        combobox_tipo = customtkinter.CTkComboBox(ventana_buscar,
                             values=["Titulo", "Autor", "Genero", "Publicacion", "Estado"],
                             state="readonly")
         combobox_tipo.grid(row=0, column=1)
@@ -165,8 +165,8 @@ class App(customtkinter.CTk):
         boton_cancelar = Button(ventana_buscar, text="Cancelar", command=ventana_buscar.destroy)
         boton_cancelar.grid(row=2, column=1)
         
-    def abrirVentanaReservar():
-        ventana_reservar = Toplevel(root, padx=20, pady=20)
+    def abrirVentanaReservar(self):
+        ventana_reservar = Toplevel(self, padx=20, pady=20)
         ventana_reservar.title("Reservar libro")
 
         # Input para poner el nombre del libro a reservar
@@ -208,7 +208,7 @@ class App(customtkinter.CTk):
                         showinfo(title=error, message=error)
 
                     ventana_encontrados.destroy()
-                    actualizar_tabla()
+                    self.actualizar_tabla()
 
                 boton_reservar = Button(frame_botones, text="Reservar", command=reservar)
                 boton_reservar.grid(row=1, column=0)
@@ -223,8 +223,8 @@ class App(customtkinter.CTk):
         boton_cancelar = Button(ventana_reservar, text="Cancelar", command=ventana_reservar.destroy)
         boton_cancelar.grid(row=1, column=1)
         
-    def abrirVentanaCancelar():
-        ventana_cancelar = Toplevel(root, padx=20, pady=20)
+    def abrirVentanaCancelar(self):
+        ventana_cancelar = Toplevel(self, padx=20, pady=20)
         ventana_cancelar.title("Cancelar reserevación de libro")
 
         # Input para poner el nombre del libro a cancelar
@@ -266,7 +266,7 @@ class App(customtkinter.CTk):
                         showinfo(title=error, message=error)
 
                     ventana_encontrados.destroy()
-                    actualizar_tabla()
+                    self.actualizar_tabla()
 
                 boton_cancelar = Button(frame_botones, text="Cancelar reservación", command=cancelar)
                 boton_cancelar.grid(row=1, column=0)
@@ -281,8 +281,8 @@ class App(customtkinter.CTk):
         boton_cancelar = Button(ventana_cancelar, text="Cancelar", command=ventana_cancelar.destroy)
         boton_cancelar.grid(row=1, column=1)
         
-    def abrirVentanaEditar():
-        ventana_editar = Toplevel(root, padx=20, pady=20)
+    def abrirVentanaEditar(self):
+        ventana_editar = Toplevel(self, padx=20, pady=20)
         ventana_editar.title("Editar libro")
 
         label_titulo = Label(ventana_editar, text="Titulo").grid(row=0, column=0)
@@ -352,7 +352,7 @@ class App(customtkinter.CTk):
                         biblioteca.editarLibro(libroSeleccionado, nuevaInformacion)
 
                         # Después de editar el libro, actualizamos los datos de la tabla
-                        actualizar_tabla()
+                        self.actualizar_tabla()
                         ventana_encontrados.destroy()
                         ventana_editar_libro.destroy()
 
@@ -374,8 +374,8 @@ class App(customtkinter.CTk):
         boton_cancelar = Button(ventana_editar, text="Cancelar", command=ventana_editar.destroy)
         boton_cancelar.grid(row=5, column=1)
     
-    def abrirVentanaEliminar():
-        ventana_eliminar = Toplevel(root, padx=20, pady=20)
+    def abrirVentanaEliminar(self):
+        ventana_eliminar = Toplevel(self, padx=20, pady=20)
         ventana_eliminar.title("Eliminar libro")
 
         # Input para poner el nombre del libro a eliminar
@@ -415,7 +415,7 @@ class App(customtkinter.CTk):
                     biblioteca.eliminarLibro(encontrados[int(input_indice.get()) - 1])
 
                     ventana_encontrados.destroy()
-                    actualizar_tabla()
+                    self.actualizar_tabla()
 
                 boton_borrar = Button(frame_botones, text="Borrar", command=borrar)
                 boton_borrar.grid(row=1, column=0)

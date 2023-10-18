@@ -1,7 +1,10 @@
+import tkinter as tk
 import customtkinter as ctk
 
 from tkinter.messagebox import showerror, showinfo
+from PIL import Image as PILImage, ImageTk as PILImageTk
 
+from utils import *
 from Biblioteca import *
 from Libro import *
 from Tabla import *
@@ -16,7 +19,7 @@ class App(ctk.CTk):
         super().__init__()
 
         # Configure window
-        self.title("Proyecto Biblioteca")
+        self.title("Biblioteca")
         self.geometry(f"{1100}x{580}")
 
         # Creamos la tabla del inicio
@@ -33,7 +36,7 @@ class App(ctk.CTk):
         self.sidebar_frame = ctk.CTkFrame(self, width=140, corner_radius=0)
         self.sidebar_frame.grid(row=0, column=0, rowspan=7, sticky="nsew")
         self.sidebar_frame.grid_rowconfigure(4, weight=1)
-        self.logo_label = ctk.CTkLabel(self.sidebar_frame, text="Proyecto Biblioteca", font=ctk.CTkFont(size=20, weight="bold"))
+        self.logo_label = ctk.CTkLabel(self.sidebar_frame, text="Biblioteca", font=ctk.CTkFont(size=20, weight="bold"))
         self.logo_label.grid(row=0, column=0, padx=20, pady=(20, 10))
         self.sidebar_button_1 = ctk.CTkButton(self.sidebar_frame, command=self.abrirVentanaAgregar, text="Agregar Libro")
         self.sidebar_button_1.grid(row=1, column=0, padx=20, pady=10)
@@ -47,7 +50,7 @@ class App(ctk.CTk):
         self.sidebar_button_5.grid(row=3, column=0, padx=20, pady=10)
         self.sidebar_button_6 = ctk.CTkButton(self.sidebar_frame, command=self.abrirVentanaEliminar, text="Borrar Libro")
         self.sidebar_button_6.grid(row=4, column=0, padx=20, pady=10)
-        self.sidebar_button_7 = ctk.CTkButton(self.sidebar_frame, command=lambda: self.destroy(), text="Salir")
+        self.sidebar_button_7 = ctk.CTkButton(self.sidebar_frame, command=self.salir, text="Salir")
         self.sidebar_button_7.grid(row=7, column=0, padx=20, pady=10)
         
         self.appearance_mode_label = ctk.CTkLabel(self.sidebar_frame, text="Tema:", anchor="w")
@@ -405,6 +408,81 @@ class App(ctk.CTk):
         boton_cancelar = ctk.CTkButton(ventana_eliminar, text="Cancelar", command=ventana_eliminar.destroy, width=15)
         boton_cancelar.grid(row=1, column=1, padx=10, pady=10)
 
+    def salir(self):
+        self.destroy()
+        main()
+
+class Login(ctk.CTk):
+    def __init__(self):
+        super().__init__()
+
+        # Ventana login
+        self.title("Biblioteca | Inicio de sesión")
+        self.geometry("500x500") # Tamaño de imagen
+        self.resizable(width=False, height=False) # Evita redimensionar y fallos en imagen
+
+        # Fondo
+        fondo = PILImage.open(imgLogin)
+        fondo = ctk.CTkImage(light_image=fondo, size=(500, 500))
+        label = ctk.CTkLabel(self, image=fondo, text="").place(x=0, y=0)
+        titulo = ctk.CTkLabel(self, text="Biblioteca", font=("Arial", 20, "normal")).place(x=210, y=130)
+
+        # Variables
+        self.usuario = StringVar()
+        self.contrasena = StringVar()
+
+        # Inputs
+        entrada = ctk.CTkEntry(self, textvariable=self.usuario, width=200)
+        entrada.place(x=150, y=200)
+        entrada2 = ctk.CTkEntry(self, textvariable=self.contrasena, show="*", width=200)
+        entrada2.place(x=150, y=250)
+
+        # Botones inicio sesión
+        boton = ctk.CTkButton(self, text="Entrar", cursor="hand2", command=self.login, width=200)
+        boton.place(x=150, y=345)
+        boton1 = ctk.CTkButton(self, text="Salir", cursor="hand2", command=self.cerrarLogin, width=200)
+        boton1.place(x=150, y=410)
+        self.mainloop()
+
+    def login(self):
+        nombre = self.usuario.get()
+        contra = self.contrasena.get()
+        if nombre == USUARIO and contra == CONTRASENA:
+            self.correcta()
+        else:
+            self.incorrecta()
+
+    def correcta(self):
+        # Se destruye la ventana del login para abrir la principal
+        self.cerrarLogin()
+
+        root = App()
+        root.mainloop()
+
+    def incorrecta(self):
+        self.withdraw()
+        window = ctk.CTkToplevel()
+        window.title("Biblioteca | Error al iniciar sesión")
+        window.geometry("500x500") # Tamaño de imagen
+        window.resizable(width=False, height=False) # Evita redimensionar y fallos en imagen
+        
+        texto = ctk.CTkLabel(window, text="Revise sus credenciales para acceder", font=("Arial", 20, "normal")).place(relwidth=1, relheight=1)
+
+        def regreso():
+            window.withdraw()
+            self.deiconify()
+
+        # Boton regresar
+        boton = ctk.CTkButton(window, text="Intentar de nuevo", command=regreso, cursor="hand2")
+        boton.place(x=180, y=390)
+        window.mainloop()
+
+    def cerrarLogin(self):
+        self.destroy()
+
+def main():
+    login = Login()
+    login.mainloop()
+
 if __name__ == "__main__":
-    root = App()
-    root.mainloop()
+    main()

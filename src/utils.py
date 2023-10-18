@@ -1,5 +1,14 @@
 import pandas as pd
 import re
+from os import path
+
+# Credenciales
+USUARIO = "admin"
+CONTRASENA = "12345"
+
+# Imagenes
+DIRNAME = path.dirname(__file__)
+imgLogin = path.join(DIRNAME, "fondo.png")
 
 LIBRO_ESTADOS = {
     0: "No disponible",

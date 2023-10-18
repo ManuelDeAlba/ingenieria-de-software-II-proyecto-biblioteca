@@ -1,8 +1,6 @@
-import tkinter as tk
 import customtkinter as ctk
-
 from tkinter.messagebox import showerror, showinfo
-from PIL import Image as PILImage, ImageTk as PILImageTk
+from PIL import Image as PILImage
 
 from utils import *
 from Biblioteca import *
@@ -465,7 +463,7 @@ class Login(ctk.CTk):
         window.title("Biblioteca | Error al iniciar sesión")
         window.geometry("500x500") # Tamaño de imagen
         window.resizable(width=False, height=False) # Evita redimensionar y fallos en imagen
-        
+
         texto = ctk.CTkLabel(window, text="Revise sus credenciales para acceder", font=("Arial", 20, "normal")).place(relwidth=1, relheight=1)
 
         def regreso():

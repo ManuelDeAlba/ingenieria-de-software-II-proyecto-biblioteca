@@ -98,6 +98,12 @@ class App(ctk.CTk):
         input_publicacion.grid(row=4, column=2)
 
         def guardar():
+            # Validación por si no se introdujeron todos los datos
+            if not (input_titulo.get() and input_autor.get() and input_genero.get() and input_publicacion.get()):
+                ventana_agregar.destroy()
+                showerror(title="Información incompleta", message="Información incompleta")
+                return
+            
             libro = Libro(input_titulo.get(), input_autor.get(), input_genero.get(), input_publicacion.get())
             biblioteca.agregarLibro(libro)
 

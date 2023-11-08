@@ -100,8 +100,9 @@ class App(ctk.CTk):
         def guardar():
             # Validación por si no se introdujeron todos los datos
             if not (input_titulo.get() and input_autor.get() and input_genero.get() and input_publicacion.get()):
-                ventana_agregar.destroy()
+                # ventana_agregar.destroy()
                 showerror(title="Información incompleta", message="Información incompleta")
+                ventana_agregar.after(10, ventana_agregar.lift) # Se muestra la ventana por encima de la anterior
                 return
             
             libro = Libro(input_titulo.get(), input_autor.get(), input_genero.get(), input_publicacion.get())
